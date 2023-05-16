@@ -56,6 +56,9 @@ mean(joie[-which(region=="Western Europe")])
 mean(joie[which(region=="North America and ANZ")])
 mean(joie[-which(region=="North America and ANZ")])
 
+mean(joie[which(region == "Western Europe" | region == "North America and ANZ")])
+mean(joie[-which(region == "Western Europe" | region == "North America and ANZ")])
+
 mean(joie[which(region=="Middle East and North Africa ")])
 mean(joie[-which(region=="Middle East and North Africa ")])
 
@@ -238,18 +241,64 @@ round(apply(corrupt[,-1],2,mean),digits=1)  # on arrondit a un chiffre apres la 
 
 ## STATISTIQUE INFERENTIELLE 
 
+# Créer un dataframe avec les données
+donneesinferentielle <- data.frame(summary(donnees[, c("Ladder.score","Logged.GDP.per.capita", "Social.support", "Healthy.life.expectancy", "Freedom.to.make.life.choices", "Generosity", "Perceptions.of.corruption")]))
+
+# Résumé des variables numériques
+summary(donneesinferentielle[, c("Ladder.score", "Logged.GDP.per.capita", "Social.support", "Healthy.life.expectancy", "Freedom.to.make.life.choices", "Generosity", "Perceptions.of.corruption")])
+
+# Test d'hypothèse : Comparaison de la moyenne de "Ladder.score" à une valeur spécifique
+t.test(donneesinferentielle$Ladder.score, mu = 5)
+
+# Test de corrélation entre "Social.support" et "Healthy.life.expectancy"
+cor.test(donneesinferentielle$Social.support, donneesinferentielle$Healthy.life.expectancy)
+
+# Régression linéaire pour prédire "Ladder.score" à partir de "Logged.GDP.per.capita"
+lm_model <- lm(Ladder.score ~ Logged.GDP.per.capita, data = donnees)
+summary(lm_model)
+
+# Test du Chi-square entre les catégories de "Regional.indicator" et "Perceptions.of.corruption"
+chisq.test(donneesinferentielle$Regional.indicator, donneesinferentielle$Perceptions.of.corruption)
 
 
 ## ANALYSE EN COMPOSANTES PRINCIPALES (ACP)
 
-
-
-require(PCAmixdata) # permet de charger le package "PCAmixdata" 
-# Mise en oeuvre de l'ACP
+install.packages("PCAmixdata")
+library(PCAmixdata)
+donnees<-read.csv2("/Users/debidour/Desktop/ENSC/PERSONNEL/1A/MATHS/Projet R/Data.csv",header=TRUE,dec=".",sep=",")
+require(PCAmixdata)
+# permet de charger le package "PCAmixdata"
+# afin de pouvoir l’utiliser par la suite
+help(PCAmix)
+# Mise en oeuvre de l’ACP
 #----------------------------------------
-res<-PCAmix(pib[1,10]) # tous les calculs de l'ACP sont stockes dans l'objet "res"
-# NB : par défaut les 3 graphiques des plans factoriels 1-2 
-# sont affichés a l'écran : 
-#   - projection des individus sur le plan 1-2
-#   - cercle des corrélations du plan 1-2
-#   - Graphique des "squared loadings" du plan 1-2
+donnees_numeriques <- donnees[, c("Ladder.score","Logged.GDP.per.capita", "Social.support", "Healthy.life.expectancy", "Freedom.to.make.life.choices", "Generosity", "Perceptions.of.corruption")]
+res<-PCAmix(donnees_numeriques) # tous les calculs de l’ACP sont stockes dans l’objet "res"n NB : par defaut les graphiques des plans factoriels 1-2 sont affiches a l’ecran
+res <- PCAmix(donnees_numeriques,graph=FALSE) # idem sans les graphiques
+res # permet de voir l’ensemble des sorties numeriques disponibles
+#-----------------------------------
+# Choix du nombre d’axes ~A retenir
+#-----------------------------------
+round(res$eig,digit=2) # permet d’afficher les valeurs propres et les pourcentages
+# de variances expliquees par chaque axe
+# Graphique de l’ebouli des valeurs propres
+barplot(res$eig[,1],main="Eigenvalues",names.arg=1:nrow(res$eig))
+abline(h=1,col=2,lwd=2)
+#--------------------------------------------------------------------
+# Graphiques des individus et des variables sur le plan factoriel 1-2
+#--------------------------------------------------------------------
+?plot.PCAmix # permet d’afficher la fenetre d’aide de la commande "plot.PCA"
+plot(res,axes=c(1,2),choice="ind") # on retrouve ici le graphique des individus (plan 1-2)
+plot(res,axes=c(1,2),choice="cor") # on retrouve ici le cercle des corr\’elations
+# des variables (plan 1-2)
+plot(res,axes=c(1,2),choice="sqload") # on retrouve ici le graphique des "square loadings" (plan 1-2)
+#--------------------------------------------------------------------
+# Sorties numeriques pour les individus et es variables
+#--------------------------------------------------------------------
+res$ind # permet d’afficher l’ensemble des sorties numeriques associees aux individus :
+# coordonnees, contributions, cosinus carres
+round(res$ind$cos2,digit=3) # uniquement les cosinus carres
+res$quanti # permet d’afficher l’ensemble des sorties numeriques associees aux variables :
+# coordonnees, contributions, cosinus carres
+round(res$quanti$cos2,digit=3) # uniquement les cosinus carres
+
