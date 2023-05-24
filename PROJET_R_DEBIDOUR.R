@@ -1110,10 +1110,36 @@ abline(h = 1, col = 2, lwd = 2)
 #--------------------------------------------------------------------
 
 ?plot.PCAmix # permet d’afficher la fenetre d’aide de la commande "plot.PCA"
-plot(res, axes = c(1, 2), choice = "ind") # on retrouve ici le graphique des individus (plan 1-2)
+n <- nrow(donnees_numeriques)
+joie1 <- donnees_numeriques[1] # Ladder.score (ou niveau de joie)
+social1 <- donnees_numeriques[3] # Social support
+sante1 <- donnees_numeriques[4] # Healthy life expectancy
+liberte1 <- donnees_numeriques[5] # Freedom to make life choices
+generosite1 <- donnees_numeriques[6] # Generosity
+corrupt1 <- donnees_numeriques[7] # Perceptions.of.corruption
+pib_superieurà <- rep(1,n)
+# Calcul exponentiel du pib pour l'obtenir
+pib1 <- exp(donnees_numeriques[2])
+pib_superieurà[which(pib1>5000)] <- 2
+pib_superieurà[which(pib1>10000)] <- 3
+pib_superieurà[which(pib1>20000)] <- 4
+pib_superieurà[which(pib1>30000)] <- 5
+pib_superieurà[which(pib1>40000)] <- 6
+pib_superieurà[which(pib1>50000)] <- 7
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(pib_superieurà))
 plot(res, axes = c(1, 2), choice = "cor") # on retrouve ici le cercle des corr\’elations
 # des variables (plan 1-2)
 plot(res, axes = c(1, 2), choice = "sqload") # on retrouve ici le graphique des "square loadings" (plan 1-2)
+
+#--------------------------------------------------------------------
+# Graphiques des individus et des variables sur le plan factoriel 1-3
+#--------------------------------------------------------------------
+
+# ?plot.PCAmix # permet d’afficher la fenetre d’aide de la commande "plot.PCA"
+# plot(res, axes = c(1, 3), choice = "ind") # on retrouve ici le graphique des individus (plan 1-2)
+# plot(res, axes = c(1, 3), choice = "cor") # on retrouve ici le cercle des corr\’elations
+# # des variables (plan 1-2)
+# plot(res, axes = c(1, 3), choice = "sqload") # on retrouve ici le graphique des "square loadings" (plan 1-2)
 
 #--------------------------------------------------------------------
 # Sorties numeriques pour les individus et es variables
@@ -1125,3 +1151,4 @@ round(res$ind$cos2, digit = 3) # uniquement les cosinus carres
 res$quanti # permet d’afficher l’ensemble des sorties numeriques associees aux variables :
 # coordonnees, contributions, cosinus carres
 round(res$quanti$cos2, digit = 3) # uniquement les cosinus carres
+
