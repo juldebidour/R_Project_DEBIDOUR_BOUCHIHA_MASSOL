@@ -111,12 +111,24 @@ mean(joie[-which(region == "Commonwealth of Independent States")])
 quantile(joie, probs = seq(from = 0.1, to = 0.9, by = 0.1))
 par(mfrow = c(2, 1))
 hist(joie)
+#on calcule les moyennes de joie par région
+moyennes_joie <- aggregate(joie, by = list(region), FUN = mean)
+#Palette de couleurs
+couleurs <- rainbow(length(unique(region)))
+#on crée l'histogramme des moyennes de joie par région avec noms de pays et couleurs différentes
+barplot(moyennes_joie$x, names.arg = moyennes_joie$Group.1, col = couleurs, xlab = "Région", ylab = "Moyenne du score de bonheur", main = "Histogramme des moyennes de score de bonheur par région", cex.names = 0.5, las = 2)
+## Ajouter les noms des pays à l'histogramme -->illisible
+text(x = barplot(moyennes_joie$x, col = couleurs) - 0.3, y = moyennes_joie$x + 0.1, labels = pays, cex = 0.6, pos = 3, xpd = TRUE)
+
 par(mfrow = c(1, 1))
 boxplot(joie)
 head(joie) # affiche les 6 premieres lignes du jeu de donnees joie
 dim(joie) # donne le nombre de lignes et de colonnes du jeu de donnees
 joie # affiche l'integralite du jeu de donnees
-
+install.packages("dplyr")
+library(dplyr)
+n_distinct(df$region)
+sapply(donnees, function(x) n_distinct(x))
 
 #----------------------------------------
 # Listes des divers pays
@@ -1117,6 +1129,7 @@ sante1 <- donnees_numeriques[4] # Healthy life expectancy
 liberte1 <- donnees_numeriques[5] # Freedom to make life choices
 generosite1 <- donnees_numeriques[6] # Generosity
 corrupt1 <- donnees_numeriques[7] # Perceptions.of.corruption
+###PIBPARHABITANT PLAN FACTORIEL
 pib_superieurà <- rep(1,n)
 # Calcul exponentiel du pib pour l'obtenir
 pib1 <- exp(donnees_numeriques[2])
