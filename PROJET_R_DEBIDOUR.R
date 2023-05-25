@@ -74,6 +74,9 @@ range(joie)
 mean(joie)
 variance(joie)
 median(joie)
+pays_median <- pays[which(joie == median(joie))]
+# Nombre de pays avec un score inférieur à 5.5
+count <- sum(joie < 5.5)
 # étude du niveau de joie selon les régions du monde
 mean(joie[which(region == "Western Europe")])
 mean(joie[-which(region == "Western Europe")])
@@ -81,8 +84,8 @@ mean(joie[-which(region == "Western Europe")])
 mean(joie[which(region == "North America and ANZ")])
 mean(joie[-which(region == "North America and ANZ")])
 
-mean(joie[which(region == "Western Europe" | region == "North America and ANZ")])
-mean(joie[-which(region == "Western Europe" | region == "North America and ANZ")])
+mean(joie[which(region == "Western Europe" | region == "North America and ANZ")])####IMPORTANT####
+mean(joie[-which(region == "Western Europe" | region == "North America and ANZ")])####IMPORTANT####
 
 mean(joie[which(region == "Middle East and North Africa ")])
 mean(joie[-which(region == "Middle East and North Africa ")])
@@ -121,7 +124,8 @@ barplot(moyennes_joie$x, names.arg = moyennes_joie$Group.1, col = couleurs, xlab
 text(x = barplot(moyennes_joie$x, col = couleurs) - 0.3, y = moyennes_joie$x + 0.1, labels = pays, cex = 0.6, pos = 3, xpd = TRUE)
 
 par(mfrow = c(1, 1))
-boxplot(joie)
+boxplot(joie,
+        xlab = "Boxplot du score de bonheur", ylab = "Niveau de score de bonheur")
 head(joie) # affiche les 6 premieres lignes du jeu de donnees joie
 dim(joie) # donne le nombre de lignes et de colonnes du jeu de donnees
 joie # affiche l'integralite du jeu de donnees
@@ -134,7 +138,7 @@ sapply(donnees, function(x) n_distinct(x))
 # Listes des divers pays
 #----------------------------------------
 
-
+table(pays)
 
 #----------------------------------------
 # Liste des régions du monde
@@ -294,6 +298,14 @@ round(apply(corrupt[, -1], 2, mean), digits = 1) # on arrondit a un chiffre apre
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Créer un graphique avec plusieurs boxplots
+couleur <- c("red", "blue", "green", "pink")
+boxplot(social, liberte, generosite, corrupt, names = c("Support social", "Liberté ressentie", "Générosité", "Niveau de corruption perçu"),
+        xlab = "Critères étudiés", ylab = "Score", main = "Comparaison des différents critères", col = couleur)
+
+
 
 
 ##### STATISTIQUE INFERENTIELLE #####
