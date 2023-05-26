@@ -137,8 +137,31 @@ sapply(donnees, function(x) n_distinct(x))
 #----------------------------------------
 # Listes des divers pays
 #----------------------------------------
-
+install.packages("ggplot2")
+library("ggplot2")
 table(pays)
+library(ggplot2)
+
+# Créer un dataframe avec le nombre de pays par région
+pays_par_region <- table(pays)
+
+# Convertir en dataframe
+df_pays_par_region <- data.frame(region = names(pays_par_region), count = as.numeric(pays_par_region))
+
+# Créer le graphique à barres groupées avec une taille réduite
+ggplot(df_pays_par_region, aes(x = region, y = count, fill = region)) +
+    geom_bar(stat = "identity") +
+    xlab("Région") +
+    ylab("Nombre de pays") +
+    ggtitle("           Répartition des pays par région") +
+    theme(plot.title = element_text(size = 18, hjust = 0.5),
+          axis.text = element_text(size = 0),
+          axis.title = element_text(size = 5),
+          legend.text = element_text(size = 5),
+          legend.title = element_text(size = 5),
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          panel.background = element_blank())
 
 #----------------------------------------
 # Liste des régions du monde
@@ -146,6 +169,31 @@ table(pays)
 
 
 table(region)
+# Sélectionner les variables d'intérêt
+variables <- c("Country", "Variable_qualitative")
+
+# Créer un sous-ensemble des données pour les pays sélectionnés
+donnees_pays <- donnees[donnees$Country %in% pays_liste, variables]
+
+# Créer le graphique à barres
+ggplot(donnees_pays, aes(x = Variable_qualitative)) +
+    geom_bar(fill = "steelblue") +
+    xlab("Variable qualitative") +
+    ylab("Fréquence") +
+    ggtitle("Distribution de la variable qualitative")
+# Calculer les fréquences des catégories
+frequences <- table(donnees$Variable_qualitative)
+
+# Créer le graphique en secteurs
+pie(frequences, labels = names(frequences), col = rainbow(length(frequences)))
+# Sélectionner les variables d'intérêt
+variables <- c("Variable_qualitative1", "Variable_qualitative2")
+
+# Créer un sous-ensemble des données pour les pays sélectionnés
+donnees_pays <- donnees[donnees$Country %in% pays_liste, variables]
+
+# Créer le graphique en mosaïque
+mosaicplot(table(donnees_pays))
 
 
 #----------------------------------------
@@ -1085,9 +1133,9 @@ res<-TestVariance.prog(ech2,sigma0.2=0.8,alternative="less")
 # cachée derrière les données de l'échantillon "ech2"), tout simplement parce que les alternatives H1 choisies
 # étaient très mals choisies.
 
-TestVariance.prog <- function(joie,sigma0.2=1,alternative="less"){
-    n <- length(joie)
-    kn <- var(joie)*(n-1)/sigma0.2
+TestVariance1.prog <- function(pib,sigma0.2=1,alternative="less"){
+    n <- length(pib)
+    kn <- var(pib)*(n-1)/sigma0.2
     if (alternative=="less") {
         p.value<-pchisq(kn,df=n-1)
     }
@@ -1106,12 +1154,12 @@ TestVariance.prog <- function(joie,sigma0.2=1,alternative="less"){
         cat("H1 : vraie variance < ", sigma0.2,fill=T)
     }
     cat("Statistique de test Kn=",kn," df=",n-1,"  p-value=",p.value,fill=T)
-    cat("Estimation sans biais de la variance = ",var(joie),fill=T)
+    cat("Estimation sans biais de la variance = ",var(pib),fill=T)
     cat("--------------------------------",fill=T)
     list(kn=kn,p.value=p.value)
 }
-ech2<-rnorm(500,sd=1)
-res<-TestVariance.prog(ech2,sigma0.2 =2,alternative="greater")
+pib<-rnorm(500,sd=1)
+res<-TestVariance.prog(pib,sigma0.2 =2,alternative="greater")
 res<-TestVariance.prog(ech2,sigma0.2 =2,alternative="less")
 res<-TestVariance.prog(ech2,sigma0.2=0.8,alternative="greater")
 res<-TestVariance.prog(ech2,sigma0.2=0.8,alternative="less")
