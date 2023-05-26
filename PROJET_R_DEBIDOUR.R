@@ -137,18 +137,14 @@ sapply(donnees, function(x) n_distinct(x))
 #----------------------------------------
 # Listes des divers pays
 #----------------------------------------
+
 install.packages("ggplot2")
 library("ggplot2")
 table(pays)
-library(ggplot2)
-
-# Créer un dataframe avec le nombre de pays par région
+# dataframe avec le nombre de pays par région
 pays_par_region <- table(pays)
-
-# Convertir en dataframe
 df_pays_par_region <- data.frame(region = names(pays_par_region), count = as.numeric(pays_par_region))
-
-# Créer le graphique à barres groupées avec une taille réduite
+# graphique à barres groupées avec une taille réduite
 ggplot(df_pays_par_region, aes(x = region, y = count, fill = region)) +
     geom_bar(stat = "identity") +
     xlab("Région") +
@@ -167,34 +163,7 @@ ggplot(df_pays_par_region, aes(x = region, y = count, fill = region)) +
 # Liste des régions du monde
 #----------------------------------------
 
-
 table(region)
-# Sélectionner les variables d'intérêt
-variables <- c("Country", "Variable_qualitative")
-
-# Créer un sous-ensemble des données pour les pays sélectionnés
-donnees_pays <- donnees[donnees$Country %in% pays_liste, variables]
-
-# Créer le graphique à barres
-ggplot(donnees_pays, aes(x = Variable_qualitative)) +
-    geom_bar(fill = "steelblue") +
-    xlab("Variable qualitative") +
-    ylab("Fréquence") +
-    ggtitle("Distribution de la variable qualitative")
-# Calculer les fréquences des catégories
-frequences <- table(donnees$Variable_qualitative)
-
-# Créer le graphique en secteurs
-pie(frequences, labels = names(frequences), col = rainbow(length(frequences)))
-# Sélectionner les variables d'intérêt
-variables <- c("Variable_qualitative1", "Variable_qualitative2")
-
-# Créer un sous-ensemble des données pour les pays sélectionnés
-donnees_pays <- donnees[donnees$Country %in% pays_liste, variables]
-
-# Créer le graphique en mosaïque
-mosaicplot(table(donnees_pays))
-
 
 #----------------------------------------
 # GDP
@@ -1227,6 +1196,97 @@ plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(pib_superieurà)
 plot(res, axes = c(1, 2), choice = "cor") # on retrouve ici le cercle des corr\’elations
 # des variables (plan 1-2)
 plot(res, axes = c(1, 2), choice = "sqload") # on retrouve ici le graphique des "square loadings" (plan 1-2)
+
+liberte2supérieurà <- rep(1, n)
+liberte2supérieurà[which(liberte1 >= 0.9)] <- 2
+liberte2supérieurà[which(liberte1 >= 0.8 & liberte1 < 0.9)] <- 3
+liberte2supérieurà[which(liberte1 >= 0.7 & liberte1 < 0.8)] <- 4
+liberte2supérieurà[which(liberte1 >= 0.6 & liberte1 < 0.7)] <- 5
+liberte2supérieurà[which(liberte1 >= 0.5 & liberte1 < 0.6)] <- 6
+liberte2supérieurà[which(liberte1 >= 0.4 & liberte1 < 0.5)] <- 7
+liberte2supérieurà[which(liberte1 >= 0.3 & liberte1 < 0.4)] <- 8
+liberte2supérieurà[which(liberte1 >= 0.2 & liberte1 < 0.3)] <- 9
+liberte2supérieurà[which(liberte1 >= 0.1 & liberte1 < 0.2)] <- 10
+
+sante2supérieurà <- rep(1, n)
+sante2supérieurà[which(sante1 >= 90)] <- 2
+sante2supérieurà[which(sante1 >= 80)] <- 3
+sante2supérieurà[which(sante1 >= 70 )] <- 4
+sante2supérieurà[which(sante1 >= 60 )] <- 5
+sante2supérieurà[which(sante1 >= 50 & sante1 < 0.6)] <- 6
+sante2supérieurà[which(sante1 >= 40 & sante1 < 0.5)] <- 7
+sante2supérieurà[which(sante1 >= 30 & sante1 < 0.4)] <- 8
+sante2supérieurà[which(sante1 >= 20 & sante1 < 0.3)] <- 9
+sante2supérieurà[which(sante1 >= 10 & sante1 < 0.2)] <- 10
+
+generosite2supérieurà <- rep(1, n)
+generosite2supérieurà[which(generosite1 >= 0.9)] <- 2
+generosite2supérieurà[which(generosite1 >= 0.8 & generosite1 < 0.9)] <- 3
+generosite2supérieurà[which(generosite1 >= 0.7 & generosite1 < 0.8)] <- 4
+generosite2supérieurà[which(generosite1 >= 0.6 & generosite1 < 0.7)] <- 5
+generosite2supérieurà[which(generosite1 >= 0.5 & generosite1 < 0.6)] <- 6
+generosite2supérieurà[which(generosite1 >= 0.4 & generosite1 < 0.5)] <- 7
+generosite2supérieurà[which(generosite1 >= 0.3 & generosite1 < 0.4)] <- 8
+generosite2supérieurà[which(generosite1 >= 0.2 & generosite1 < 0.3)] <- 9
+generosite2supérieurà[which(generosite1 >= 0.1 & generosite1 < 0.2)] <- 10
+
+corrupt2supérieurà <- rep(1, n)
+corrupt2supérieurà[which(corrupt1 >= 0.9)] <- 2
+corrupt2supérieurà[which(corrupt1 >= 0.8 & corrupt1 < 0.9)] <- 3
+corrupt2supérieurà[which(corrupt1 >= 0.7 & corrupt1 < 0.8)] <- 4
+corrupt2supérieurà[which(corrupt1 >= 0.6 & corrupt1 < 0.7)] <- 5
+corrupt2supérieurà[which(corrupt1 >= 0.5 & corrupt1 < 0.6)] <- 6
+corrupt2supérieurà[which(corrupt1 >= 0.4 & corrupt1 < 0.5)] <- 7
+corrupt2supérieurà[which(corrupt1 >= 0.3 & corrupt1 < 0.4)] <- 8
+corrupt2supérieurà[which(corrupt1 >= 0.2 & corrupt1 < 0.3)] <- 9
+corrupt2supérieurà[which(corrupt1 >= 0.1 & corrupt1 < 0.2)] <- 10
+
+social2supérieurà <- rep(1, n)
+social2supérieurà[which(social1 >= 0.9)] <- 2
+social2supérieurà[which(social1 >= 0.8 & social1 < 0.9)] <- 3
+social2supérieurà[which(social1 >= 0.7 & social1 < 0.8)] <- 4
+social2supérieurà[which(social1 >= 0.6 & social1 < 0.7)] <- 5
+social2supérieurà[which(social1 >= 0.5 & social1 < 0.6)] <- 6
+social2supérieurà[which(social1 >= 0.4 & social1 < 0.5)] <- 7
+social2supérieurà[which(social1 >= 0.3 & social1 < 0.4)] <- 8
+social2supérieurà[which(social1 >= 0.2 & social1 < 0.3)] <- 9
+social2supérieurà[which(social1 >= 0.1 & social1 < 0.2)] <- 10
+
+par(mfrow = c(1, 1))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(pib_superieurà))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(sante2supérieurà))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(generosite2supérieurà))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(corrupt2supérieurà))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(social2supérieurà))############################################FINAL#########################
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(liberte2supérieurà))############################################FINAL#########################
+
+
+install.packages("gridExtra")
+install.packages("grid")
+library("gridExtra")
+library("grid")
+library("ggplot2")
+# Créer les graphiques individuels
+plot_pib <- plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(pib_superieurà))
+plot_sante <- plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(sante2supérieurà))
+plot_generosite <- plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(generosite2supérieurà))
+
+# Créer les textes
+text_pib <- textGrob("PIB", x = 0.1, y = 0.9, gp = gpar(fontsize = 14))
+text_sante <- textGrob("Santé", x = 0.1, y = 0.9, gp = gpar(fontsize = 14))
+text_generosite <- textGrob("Générosité", x = 0.1, y = 0.9, gp = gpar(fontsize = 14))
+
+# Créer la disposition des graphiques et des textes
+grid <- rbind(c(plot_pib, text_pib), c(plot_sante, text_sante), c(plot_generosite, text_generosite))
+
+# Afficher le graphe
+grid.arrange(grobs = grid, ncol = 2)
+
+
+social2 <- rep(1,n)
+social2[which(region == "Western Europe" | region == "North America and ANZ")] <- 2
+social2[-which(region == "Western Europe" | region == "North America and ANZ")] <- 2
+plot(res, axes = c(1, 2), choice = "ind", coloring.ind = factor(social2))
 
 #--------------------------------------------------------------------
 # Graphiques des individus et des variables sur le plan factoriel 1-3
