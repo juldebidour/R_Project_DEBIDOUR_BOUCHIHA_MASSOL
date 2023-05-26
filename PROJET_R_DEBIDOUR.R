@@ -164,6 +164,10 @@ ggplot(df_pays_par_region, aes(x = region, y = count, fill = region)) +
 #----------------------------------------
 
 table(region)
+pie_data <- rep(1, length(unique(region))) # Valeurs égales pour chaque donnée
+colors <- rainbow(length(unique(region))) # Couleurs pour chaque donnée
+pie(pie_data, labels = unique(region), col = colors)
+title("Liste des régions")
 
 #----------------------------------------
 # GDP
@@ -1213,11 +1217,11 @@ sante2supérieurà[which(sante1 >= 90)] <- 2
 sante2supérieurà[which(sante1 >= 80)] <- 3
 sante2supérieurà[which(sante1 >= 70 )] <- 4
 sante2supérieurà[which(sante1 >= 60 )] <- 5
-sante2supérieurà[which(sante1 >= 50 & sante1 < 0.6)] <- 6
-sante2supérieurà[which(sante1 >= 40 & sante1 < 0.5)] <- 7
-sante2supérieurà[which(sante1 >= 30 & sante1 < 0.4)] <- 8
-sante2supérieurà[which(sante1 >= 20 & sante1 < 0.3)] <- 9
-sante2supérieurà[which(sante1 >= 10 & sante1 < 0.2)] <- 10
+sante2supérieurà[which(sante1 >= 50 )] <- 6
+sante2supérieurà[which(sante1 >= 40 )] <- 7
+sante2supérieurà[which(sante1 >= 30 )] <- 8
+sante2supérieurà[which(sante1 >= 20 )] <- 9
+sante2supérieurà[which(sante1 >= 10 )] <- 10
 
 generosite2supérieurà <- rep(1, n)
 generosite2supérieurà[which(generosite1 >= 0.9)] <- 2
